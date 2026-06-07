@@ -11,6 +11,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
@@ -854,7 +855,13 @@ function watchAdForRun() {
   btn.textContent = '⏳ Loading...';
   btn.disabled = true;
   // ── REPLACE with real ad SDK ──
-  setTimeout(() => { closeAdGate(); startGame(); }, 3000);
+  window.Adsgram.init({ blockId: "34383" })
+  .show()
+  .then(() => { closeAdGate(); startGame(); })
+  .catch(() => {
+    btn.textContent = '▶ Watch Ad — Play On';
+    btn.disabled = false;
+  });;
 }
 
 // ── GAME START ──
@@ -1032,7 +1039,13 @@ function watchAdToContinue() {
   // ── REPLACE with real ad SDK ──
   // Monetag: window.show_rewarded_ad?.().then(onAdContinue).catch(()=>{btn.textContent='▶ Watch Ad — Continue';btn.disabled=false});
   // AdSense: adBreak({type:'reward',name:'continue',adViewed:onAdContinue,adDismissed:()=>{btn.disabled=false}});
-  setTimeout(onAdContinue, 3000);
+  window.Adsgram.init({ blockId: "34383" })
+  .show()
+  .then(onAdContinue)
+  .catch(() => {
+    btn.textContent = '▶ Watch Ad — Continue';
+    btn.disabled = false;
+  });;
 }
 function onAdContinue() { state.adUsed = true; haptic?.notificationOccurred('success'); doResume(); }
 
